@@ -19,7 +19,7 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Sam's App</title>
   </head>
   <body>
   <script>
@@ -34,48 +34,56 @@
       FB.AppEvents.logPageView();
       FB.getLoginStatus(function(response) {
           statusChangeCallback(response);
-          console.log(response)
+          //console.log(response)
       });
 
       FB.Event.subscribe("auth.logout", function(response) {
         console.log('logout:',response);
         if(response.status==="unknown"){
           document.getElementById('status').innerHTML = 'Please log into this app to continue.';
-        }
-      });
-      FB.Event.subscribe("auth.login", function(response) {
-        if(response.status==="unknown") {
-          return;
-        } else {
-          console.log('SUBSCRIBED EVENT login:',response);
-          testAPI();
+          document.getElementById('profile-pic').src = "https://fbcdn-profile-a.akamaihd.net/static-ak/rsrc.php/v2/yL/r/HsTZSDw4avx.gif";
+          document.getElementById('number-of-friends').innerHTML = 'Unknown';
+          document.getElementById('first-name').innerHTML = 'Unknown';
+          document.getElementById('last-name').innerHTML = 'Unknown';
+          document.getElementById('age-range').innerHTML = 'Unknown';
+          document.getElementById('email-address').innerHTML = 'Unknown';
         }
       });
 
+      FB.Event.subscribe("auth.login", function(response) {
+        if(response.status==="unknown") {
+          console.log('unknown user');
+        } else {
+          console.log('SUBSCRIBED EVENT login:',response);
+
+          testAPI();
+        }
+      },{scope:'email,public_profile,user_friends,publish_actions'});
+
     };
+
 
     // This function is called when someone finishes with the Login
     // Button.  See the onlogin handler attached to it in the sample
     // code below.
-    function checkLoginState() {
-      FB.getLoginStatus(function(response) {
-        statusChangeCallback(response);
-        //console.log(response)
-      });
-    }
 
     // This is called with the results from from FB.getLoginStatus().
     function statusChangeCallback(response) {
-      console.log('statusChangeCallback')
-//      console.log('statusChangeCallback');
-//      console.log(response);
+      console.log('statusChangeCallback');
 
       if (response.status === 'connected') {
         // Logged into your app and Facebook.
         testAPI();
+
       } else {
         // The person is not logged into your app or we are unable to tell.
         document.getElementById('status').innerHTML = 'Please log into this app to continue.';
+        document.getElementById('profile-pic').src = document.getElementById('profile-pic').src = "https://fbcdn-profile-a.akamaihd.net/static-ak/rsrc.php/v2/yL/r/HsTZSDw4avx.gif";
+        document.getElementById('number-of-friends').innerHTML = 'Unknown';
+        document.getElementById('first-name').innerHTML = 'Unknown';
+        document.getElementById('last-name').innerHTML = 'Unknown';
+        document.getElementById('age-range').innerHTML = 'Unknown';
+        document.getElementById('email-address').innerHTML = 'Unknown';
       }
     }
 
@@ -88,20 +96,66 @@
     }(document, 'script', 'facebook-jssdk'));
 
 
+    // This retrieves the profile pic, names, and friends for the user
+
     function testAPI() {
-      console.log('Welcome!  Fetching your information.... ');
-      FB.api('/me', function(response) {
-        console.log('Successful login for: ' + response.name);
-        document.getElementById('status').innerHTML =
-          'Welcome, ' + response.name + '!';
-      });
+
+      FB.api('/me', function (response) {
+        document.getElementById('status').innerHTML = 'Welcome, ' + response.name + '!';
+
+        // UPDATE ALL ELEMENTS
+
+        document.getElementById('profile-pic').src = response.picture.data.url;
+        if(response.friends===undefined){
+          document.getElementById('number-of-friends').innerHTML = 'Not public';
+        } else {
+          document.getElementById('number-of-friends').innerHTML = response.friends.summary.total_count;
+        }
+
+        if(response.age_range.min===undefined){
+          document.getElementById('age-range').innerHTML = 'Not public';
+        } else {
+          document.getElementById('age-range').innerHTML = 'At least ' + response.age_range.min;
+        }
+
+        if(response.email===undefined){
+          document.getElementById('email-address').innerHTML = 'Not public';
+        } else {
+          document.getElementById('email-address').innerHTML = response.email;
+        }
+
+        document.getElementById('first-name').innerHTML = response.first_name;
+        document.getElementById('last-name').innerHTML = response.last_name;
+
+
+      },{fields: 'picture.width(220).height(220),first_name,middle_name,name,last_name,friends,email,age_range'});
+
     }
+
+    function post(){
+
+      var postMessage = document.getElementById('message-input').value;
+
+      console.log('CALLING POST');
+      FB.api('/me/feed','post',{message:postMessage},function(response){
+        console.log(response);
+        if(response.error){
+          document.getElementById('post-modal').className = 'modal is-active';
+          document.getElementById('modal-content').innerHTML = '<h2>Oh no! An error has occured! Nothing has been posted.</h2>';
+        } else {
+          document.getElementById('post-modal').className = 'modal is-active';
+          document.getElementById('modal-content').innerHTML = '<h2>Post successful!</h2>';
+        }
+      });
+
+      console.log(postMessage)
+    }
+
   </script>
 
   <noscript>
     You need to enable JavaScript to run this app.
   </noscript>
   <div id="root"></div>
-
   </body>
 </html>

@@ -1,21 +1,43 @@
 @import '../node_modules/bulma/css/bulma.css';
 
+html{
+  background: #464545;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background: #4a4a4a;
-  height:100%;
+  background: #464545;
 }
 
-nav {
-  background:#615e5e !important;
+.section{
+  background: #464545 !important;
 }
 
-h1, h2, h3, h4 {
+
+#number-of-friends{
   color:#ffffff;
+  font-size:30px;
 }
 
-.box{
-  margin:30px;
+.profile-pic-box{
+  text-align: center;
+}
+
+img{
+  margin-left:10px;
+}
+
+#modal > is-active{
+  -webkit-transition: fadein 1s ease-in;
+  -moz-transition: fadein 1s ease-in;
+  -o-transition: fadein 1s ease-in;
+  transition: fadein 1s ease-in;
+}
+
+.modal-panel{
+  z-index:10;
+  text-align: center;
+  background: #ffffff;
 }
