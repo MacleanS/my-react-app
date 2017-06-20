@@ -41,3 +41,7 @@ img{
   text-align: center;
   background: #ffffff;
 }
+
+.notification{
+  border-radius: 8px;
+}
