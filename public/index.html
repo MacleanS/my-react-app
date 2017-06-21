@@ -138,22 +138,24 @@
 
       FB.api('/me/feed','post',{message:postMessage},function(response){
         console.log(response);
-        if(response.error.code===100){ // Missing message
+        if(response.error) {
+          if (response.error.code === 100) {// Missing message
 
-          document.getElementById('post-modal').className = 'modal is-active';
-          document.getElementById('modal-content').innerHTML = '<h2>Please enter a message to post!</h2>';
+            document.getElementById('post-modal').className = 'modal is-active';
+            document.getElementById('modal-content').innerHTML = '<h2>Please enter a message to post!</h2>';
 
-        } else if(response.error.code===200){ // Doesn't have authorization
+          } else if (response.error.code === 200) { // Doesn't have authorization
 
-          document.getElementById('post-modal').className = 'modal is-active';
-          document.getElementById('modal-content').innerHTML = '<h2>Oops, an error has occurred! ' +
-            'This app doesn\'t have permission to post to Facebook yet...</h2>';
+              document.getElementById('post-modal').className = 'modal is-active';
+              document.getElementById('modal-content').innerHTML = '<h2>Oops, an error has occurred! ' +
+                'This app doesn\'t have permission to post to Facebook yet...</h2>';
 
-        } else if(response.error.code===2500){ // Doesn't have access token
+          } else if (response.error.code === 2500) {// Doesn't have access token
 
-          document.getElementById('post-modal').className = 'modal is-active';
-          document.getElementById('modal-content').innerHTML = '<h2>You must log in to Facebook to be able to post!</h2>';
+              document.getElementById('post-modal').className = 'modal is-active';
+              document.getElementById('modal-content').innerHTML = '<h2>You must log in to Facebook to be able to post!</h2>';
 
+          } // END OF ERROR HANDLING
         } else {
 
           document.getElementById('post-modal').className = 'modal is-active';
