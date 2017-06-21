@@ -25,19 +25,14 @@ body {
   text-align: center;
 }
 
-img{
+#profile-pic{
   margin-left:10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1)
 }
 
-#post-modal.is-active{
-  -webkit-transition: all 1s ease-in-out 500ms;
-  -moz-transition: all 1s ease-in-out 500ms;
-  -o-transition: all 1s ease-in-out 500ms;
-  transition: all 1s ease-in-out 500ms;
-}
-
-.modal-panel{
-  z-index:10;
+.modal-panel {
+  z-index: 10;
   text-align: center;
   background: #ffffff;
 }
