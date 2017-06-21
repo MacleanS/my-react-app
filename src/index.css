@@ -29,11 +29,11 @@ img{
   margin-left:10px;
 }
 
-#modal > is-active{
-  -webkit-transition: fadein 1s ease-in;
-  -moz-transition: fadein 1s ease-in;
-  -o-transition: fadein 1s ease-in;
-  transition: fadein 1s ease-in;
+#post-modal.is-active{
+  -webkit-transition: all 1s ease-in-out 500ms;
+  -moz-transition: all 1s ease-in-out 500ms;
+  -o-transition: all 1s ease-in-out 500ms;
+  transition: all 1s ease-in-out 500ms;
 }
 
 .modal-panel{
